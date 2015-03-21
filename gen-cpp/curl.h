@@ -3,5 +3,5 @@ using namespace std;
 
 class Curl {
 public:
-  static string get(string url);
+  static void get(const string& url, string& doc);
 };

@@ -4,10 +4,23 @@ class RandCache : public Cache {
   string **data;
 
 public:
-  RandCache(int m);
-  ~RandCache();
+  RandCache(int m) : Cache(m) {
+    // assuming an average of 1KB document size
+    data = new string*[m];
+  }
 
-  string type();
-  void put(string key, string value);
-  string get(string key);
+  ~RandCache() {
+    delete[] data;
+  }
+
+  string type() {
+    return "RANDOMC CACHE REPLACEMENT POLICY";
+  }
+
+  void put(const string& key, const string& value) {
+  }
+
+  void get(const string& key, string& value) {
+
+  }
 };

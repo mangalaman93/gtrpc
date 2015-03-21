@@ -1,7 +1,6 @@
 ODIR := bin
 GEN_DIR := gen-cpp
-GEN_SRC := ProxyRPC.cpp server_constants.cpp server_types.cpp\
-           curl.cpp cache.cpp randcache.cpp
+GEN_SRC := ProxyRPC.cpp server_constants.cpp server_types.cpp curl.cpp
 GEN_OBJ := $(patsubst %.cpp,$(ODIR)/%.o, $(GEN_SRC))
 CC := g++
 
