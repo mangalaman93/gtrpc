@@ -1,11 +1,9 @@
 #include "cache.h"
 #include <cstdlib>
 #include <vector>
-#include <map>
 
 class RandCache : public Cache {
   vector<string> urls;
-  map<string, string> url_doc_map;
 
 public:
   RandCache(int m) : Cache(m) {}
@@ -42,14 +40,6 @@ public:
 
         numdoc -= 1;
       }
-    }
-  }
-
-  void get(const string& key, string& value) {
-    if(url_doc_map.count(key) > 0) {
-      value = url_doc_map[key];
-    } else {
-      value = "";
     }
   }
 };

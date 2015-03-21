@@ -1,3 +1,4 @@
+#include <map>
 #include <iostream>
 using namespace std;
 
@@ -6,6 +7,7 @@ protected:
 	int docsize;
 	int maxdocsize;
   int numdoc;
+  map<string, string> url_doc_map;
 
 public:
   // maxdocsize m is in KiloBytes
@@ -24,5 +26,11 @@ public:
   virtual void put(const string& key, const string& value) = 0;
 
   // gets value for the given key, returns ("") if the value is not present
-  virtual void get(const string& key, string& value) = 0;
+  void get(const string& key, string& value) {
+    if(url_doc_map.count(key) > 0) {
+      value = url_doc_map[key];
+    } else {
+      value = "";
+    }
+  }
 };
