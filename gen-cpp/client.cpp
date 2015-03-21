@@ -20,10 +20,11 @@ int main(int argc, char **argv) {
     transport->open();
 
     string doc;
-    string url = "url";
+    string url = "http://www.google.com/";
     client.getDocument(doc, url);
-    cout << "got the document" << endl;
+    cout << " **** got the document ***** " << endl;
     cout << doc << endl;
+    cout << "--------------------------------" << endl;
   } catch (TException& tx) {
     cout << "ERROR: " << tx.what() << endl;
   }

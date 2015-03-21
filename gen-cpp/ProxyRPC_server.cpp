@@ -2,6 +2,8 @@
 // You should copy it to another filename to avoid overwriting it.
 
 #include <iostream>
+#include "randcache.h"
+
 #include "ProxyRPC.h"
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/server/TSimpleServer.h>
@@ -16,20 +18,35 @@ using namespace ::apache::thrift::server;
 using boost::shared_ptr;
 
 class ProxyRPCHandler : virtual public ProxyRPCIf {
+  Cache *cache;
+
  public:
-  ProxyRPCHandler() {
-    // Your initialization goes here
+  ProxyRPCHandler(int cachesize) {
+    cache = new RandCache(cachesize);
   }
 
   void getDocument(std::string& _return, const std::string& url) {
-    _return = "this is a small document!";
-    std::cout << "getDocument for url:" << url << std::endl;
+    // check the cache [Cache class]
+
+    // if present, return it [Cache class]
+
+    // if not present, get the document [Curl class]
+
+    // put the document in the cache [Cahce class]
+  }
+
+  ~ProxyRPCHandler() {
+    delete cache;
   }
 };
 
 int main(int argc, char **argv) {
   int port = 9090;
-  shared_ptr<ProxyRPCHandler> handler(new ProxyRPCHandler());
+
+  // @todo, replace it with the argument passed from command line
+  int cachesize = 1024*1024; // 1 MB
+
+  shared_ptr<ProxyRPCHandler> handler(new ProxyRPCHandler(cachesize));
   shared_ptr<TProcessor> processor(new ProxyRPCProcessor(handler));
   shared_ptr<TServerTransport> serverTransport(new TServerSocket(port));
   shared_ptr<TTransportFactory> transportFactory(new TBufferedTransportFactory());
