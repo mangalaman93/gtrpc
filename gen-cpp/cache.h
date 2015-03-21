@@ -2,6 +2,7 @@
 using namespace std;
 
 class Cache {
+protected:
 	int docsize;
 	int maxdocsize;
   int numdoc;
