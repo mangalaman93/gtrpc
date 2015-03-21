@@ -8,7 +8,7 @@ THRIFT_DIR := /usr/local/include
 BOOST_DIR := /usr/local/include
 
 INC := -I$(GEN_DIR)/ -I$(THRIFT_DIR) -I$(BOOST_DIR)
-LIBS := -L/usr/local/lib/ -lthrift
+LIBS := -L/usr/local/lib/ -lthrift -lcurl
 
 .PHONY: all clean
 
