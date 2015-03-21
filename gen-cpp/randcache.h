@@ -21,6 +21,5 @@ public:
   }
 
   void get(const string& key, string& value) {
-
   }
 };
