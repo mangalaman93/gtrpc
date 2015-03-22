@@ -33,9 +33,9 @@ int main(int argc, char **argv) {
     gettimeofday(&end, NULL);
     seconds = end.tv_sec - start.tv_sec;
     useconds = end.tv_usec - start.tv_usec;
-    delta = seconds*1000 + useconds/1000;
+    delta = seconds*1000000 + useconds;
     //cout << " **** got the document ***** " << endl;
-    cout << "Took ,"<< delta << ", ms to get it"<< endl;
+    cout << "Took ,"<< delta << ", us to get it"<< endl;
     //cout << "--------------------------------" << endl;
   } catch (TException& tx) {
     cout << "ERROR: " << tx.what() << endl;

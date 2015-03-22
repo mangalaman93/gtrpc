@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "curl.h"
-#include "lrucache.h"
+#include "caches.h"
 
 #include "ProxyRPC.h"
 #include <thrift/protocol/TBinaryProtocol.h>
@@ -22,8 +22,16 @@ class ProxyRPCHandler : virtual public ProxyRPCIf {
   Cache *cache;
 
  public:
-  ProxyRPCHandler(int cachesize) {
-    cache = new LRUCache(cachesize);
+  ProxyRPCHandler(int type, int cachesize) {
+    switch(type){
+	case 2: cache = new FIFOCache(cachesize); 
+		break;
+	case 3: cache = new LRUCache(cachesize); 
+		break;
+	case 1: cache = new RandCache(cachesize); 
+		break;
+	default: break;
+    }
   }
 
   void getDocument(std::string& _return, const std::string& url) {
@@ -54,10 +62,18 @@ class ProxyRPCHandler : virtual public ProxyRPCIf {
 int main(int argc, char **argv) {
   int port = 9090;
 
+  if (argc != 3){ printf( "usage: %s type cachesize\n", argv[0] ); 
+		  printf("type 0 for EmptyCache\n");
+		  printf("type 1 for RandCache\n");
+                  printf("type 2 for FIFOCache\n");
+                  printf("type 3 for LRUCache\n");return -1;}
+
+
   // @todo, replace it with the argument passed from command line
   int cachesize = 1024*1024; // 1 MB
-
-  shared_ptr<ProxyRPCHandler> handler(new ProxyRPCHandler(cachesize));
+  //int cachesize = atoi(argv[2]);
+  int type = atoi(argv[1]);
+  shared_ptr<ProxyRPCHandler> handler(new ProxyRPCHandler(type,cachesize));
   shared_ptr<TProcessor> processor(new ProxyRPCProcessor(handler));
   shared_ptr<TServerTransport> serverTransport(new TServerSocket(port));
   shared_ptr<TTransportFactory> transportFactory(new TBufferedTransportFactory());
