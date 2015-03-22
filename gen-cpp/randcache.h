@@ -1,9 +1,11 @@
 #include "cache.h"
 #include <cstdlib>
+#include <map>
 #include <vector>
 
 class RandCache : public Cache {
   vector<string> urls;
+  map<string, string> urlmap;
 
 public:
   RandCache(int m) : Cache(m) {}
@@ -13,33 +15,37 @@ public:
     return "RANDOMC CACHE REPLACEMENT POLICY";
   }
 
-  void put(const string& key, const string& value) {
-    docsize += value.length();
+  bool contains(const string& url) {
+    return (urlmap.count(url) > 0);
+  }
+
+  void put(const string& url, const string& doc) {
+    docsize += doc.length();
 
     // loop until the cache can fit the new document
     while(true) {
       if(docsize < maxdocsize) {
-        numdoc += 1;
-        urls.push_back(key);
-        url_doc_map[key] = value;
+        urls.push_back(url);
+        urlmap[url] = doc;
         break;
       } else {
         srand(time(NULL));
         unsigned to_remove = rand() % urls.size();
 
-        if(to_remove == (urls.size()-1)) {
-          docsize -= url_doc_map[urls.back()].length();
-          url_doc_map.erase(urls.back());
-          urls.pop_back();
-        } else {
-          docsize -= url_doc_map[urls[to_remove]].length();
-          url_doc_map.erase(urls[to_remove]);
+        string str = urlmap[urls[to_remove]];
+        urlmap.erase(urls[to_remove]);
+        docsize -= str.length();
+
+        if(to_remove != (urls.size()-1)) {
           urls[to_remove] = urls.back();
-          urls.pop_back();
         }
 
-        numdoc -= 1;
+        urls.pop_back();
       }
     }
+  }
+
+  string get(const string& key) {
+    return urlmap[key];
   }
 };

@@ -1,8 +1,10 @@
 #include "cache.h"
+#include <map>
 #include <queue>
 
 class FIFOCache : public Cache {
   queue<string> urls;
+  map<string, string> urlmap;
 
 public:
   FIFOCache(int m) : Cache(m) {}
@@ -12,22 +14,28 @@ public:
     return "FIFO CACHE";
   }
 
-  void put(const string& key, const string& value) {
-  	docsize += value.length();
+  bool contains(const string& url) {
+    return (urlmap.count(url) > 0);
+  }
+
+  void put(const string& url, const string& doc) {
+  	docsize += doc.length();
 
     // loop until the cache can fit the new document
     while(true) {
       if(docsize < maxdocsize) {
-        numdoc += 1;
-        urls.push(key);
-        url_doc_map[key] = value;
+        urls.push(url);
+        urlmap[url] = doc;
         break;
       } else {
-        docsize -= url_doc_map[urls.front()].length();
-        url_doc_map.erase(urls.front());
+        docsize -= urlmap[urls.front()].length();
+        urlmap.erase(urls.front());
         urls.pop();
-        numdoc -= 1;
       }
     }
+  }
+
+  string get(const string& key) {
+    return urlmap[key];
   }
 };

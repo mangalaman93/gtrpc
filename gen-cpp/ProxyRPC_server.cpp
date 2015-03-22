@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "curl.h"
-#include "fifocache.h"
+#include "lrucache.h"
 
 #include "ProxyRPC.h"
 #include <thrift/protocol/TBinaryProtocol.h>
@@ -23,18 +23,18 @@ class ProxyRPCHandler : virtual public ProxyRPCIf {
 
  public:
   ProxyRPCHandler(int cachesize) {
-    cache = new FIFOCache(cachesize);
+    cache = new LRUCache(cachesize);
   }
 
   void getDocument(std::string& _return, const std::string& url) {
     _return.clear();
 
     // check the cache [Cache class]
-    cache->get(url, _return);
+    bool present = cache->contains(url);
 
     // if present, return it [Cache class]
-    if(_return.compare("") != 0) {
-      return;
+    if(present) {
+      _return = cache->get(url);
     }
 
     // if not present, get the document [Curl class]
