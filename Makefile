@@ -12,7 +12,7 @@ LIBS := -L/usr/local/lib/ -lthrift -lcurl
 
 .PHONY: all clean
 
-all: dir client ProxyRPC_server test
+all: dir client ProxyRPC_server get
 
 $(ODIR)/%.o: $(GEN_DIR)/%.cpp
 	$(CC) -Wall -DHAVE_INTTYPES_H -DHAVE_NETINET_IN_H $(INC) -c $< -o $@
@@ -26,9 +26,8 @@ ProxyRPC_server: $(ODIR)/ProxyRPC_server.o $(GEN_OBJ)
 client: $(ODIR)/client.o $(GEN_OBJ)
 	$(CC) $^ -o $(ODIR)/$@ $(LIBS)
 
-test: $(ODIR)/test.o $(GEN_OBJ)
+get: $(ODIR)/get.o $(GEN_OBJ)
 	$(CC) $^ -o $(ODIR)/$@ $(LIBS)
-
 
 clean:
 	rm -rf $(ODIR)/ *~
