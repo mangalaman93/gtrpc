@@ -3,8 +3,7 @@
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/transport/TSocket.h>
 #include <thrift/transport/TTransportUtils.h>
-
-#include<sys/time.h>
+#include <sys/time.h>
 
 using namespace std;
 using namespace apache::thrift;
@@ -15,18 +14,23 @@ int main(int argc, char **argv) {
   boost::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
   boost::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
   boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
-
   ProxyRPCClient client(protocol);
 
   struct timeval start, end;
   long delta,seconds, useconds;
 
-  if (argc != 2){ printf( "usage: %s url", argv[0] ); return -1;}
-  //Get List of URLs +  probabilities from doc
+  if(argc != 2) {
+    printf( "usage: %s url", argv[0] );
+    return -1;
+  }
+
+  // Get List of URLs +  probabilities from doc
   string url = argv[1];
-  //Maybe check the format of the url? "http://www.google.com/";
+
+  // Maybe check the format of the url? "http://www.google.com/";
   try {
     transport->open();
+
     string doc;
     gettimeofday(&start, NULL);
     client.getDocument(doc, url);
@@ -40,7 +44,7 @@ int main(int argc, char **argv) {
   } catch (TException& tx) {
     cout << "ERROR: " << tx.what() << endl;
   }
-  // Why do we open it again?
-  transport->open();
+
+  transport->close();
   return 0;
 }

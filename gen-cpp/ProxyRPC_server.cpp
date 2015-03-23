@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "curl.h"
-#include "caches.h"
+#include "cache.h"
 
 #include "ProxyRPC.h"
 #include <thrift/protocol/TBinaryProtocol.h>
@@ -23,14 +23,16 @@ class ProxyRPCHandler : virtual public ProxyRPCIf {
 
  public:
   ProxyRPCHandler(int type, int cachesize) {
-    switch(type){
-	case 2: cache = new FIFOCache(cachesize); 
-		break;
-	case 3: cache = new LRUCache(cachesize); 
-		break;
-	case 1: cache = new RandCache(cachesize); 
-		break;
-	default: break;
+    switch(type) {
+	    case 2: cache = new FIFOCache(cachesize);
+		    break;
+	    case 3: cache = new LRUCache(cachesize);
+		    break;
+	    case 1: cache = new RandCache(cachesize);
+    		break;
+      case 0: cache = new EmptyCache(cachesize);
+        break;
+	    default: break;
     }
   }
 
@@ -62,14 +64,15 @@ class ProxyRPCHandler : virtual public ProxyRPCIf {
 int main(int argc, char **argv) {
   int port = 9090;
 
-  if (argc != 3){ printf( "usage: %s type cachesize\n", argv[0] ); 
-		  printf("type 0 for EmptyCache\n");
-		  printf("type 1 for RandCache\n");
-                  printf("type 2 for FIFOCache\n");
-                  printf("type 3 for LRUCache\n");return -1;}
+  if(argc != 3) {
+    printf("usage: %s type cachesize\n", argv[0]);
+    printf("type 0 for EmptyCache\n");
+    printf("type 1 for RandCache\n");
+    printf("type 2 for FIFOCache\n");
+    printf("type 3 for LRUCache\n");
+    return -1;
+  }
 
-
-  // @todo, replace it with the argument passed from command line
   //int cachesize = 1024*1024; // 1 MB
   int cachesize = atoi(argv[2])*1024;
   int type = atoi(argv[1]);
