@@ -33,11 +33,16 @@ public:
   }
 
   void put(const string& url, const string& doc) {
+    if(doc.length() > maxdocsize) {
+      printf("cannot accomodate this document in cache!\n");
+      return;
+    }
+
   	docsize += doc.length();
 
     // loop until the cache can fit the new document
     while(true) {
-      if(docsize < maxdocsize) {
+      if(docsize <= maxdocsize) {
         LRUDoc *node = new LRUDoc(doc, url, NULL, head);
         urlmap[url] = node;
         node->next = head;

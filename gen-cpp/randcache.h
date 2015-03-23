@@ -20,11 +20,16 @@ public:
   }
 
   void put(const string& url, const string& doc) {
+    if(doc.length() > maxdocsize) {
+      printf("cannot accomodate this document in cache!\n");
+      return;
+    }
+
     docsize += doc.length();
 
     // loop until the cache can fit the new document
     while(true) {
-      if(docsize < maxdocsize) {
+      if(docsize <= maxdocsize) {
         urls.push_back(url);
         urlmap[url] = doc;
         break;
