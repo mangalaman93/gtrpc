@@ -67,17 +67,15 @@ int main(int argc, char **argv) {
 
   if(argc != 3) {
     printf("usage: %s type cachesize\n", argv[0]);
-	  printf("type 0 for EmptyCache\n");
-	  printf("type 1 for RandCache\n");
+    printf("type 0 for EmptyCache\n");
+    printf("type 1 for RandCache\n");
     printf("type 2 for FIFOCache\n");
     printf("type 3 for LRUCache\n");
     return -1;
   }
 
-  // @todo, replace it with the argument passed from command line
-  int cachesize = 1024*1024; // 1 MB
-
-  // int cachesize = atoi(argv[2]);
+  //int cachesize = 1024*1024; // 1 MB
+  int cachesize = atoi(argv[2])*1024;
   int type = atoi(argv[1]);
   shared_ptr<ProxyRPCHandler> handler(new ProxyRPCHandler(type,cachesize));
   shared_ptr<TProcessor> processor(new ProxyRPCProcessor(handler));
