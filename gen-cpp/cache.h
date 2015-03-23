@@ -193,6 +193,11 @@ public:
         urlmap[url] = node;
         node->next = head;
         head = node;
+
+        if(tail == NULL) {
+          tail = head;
+        }
+
         break;
       } else {
         LRUDoc* to_remove;
@@ -206,6 +211,7 @@ public:
           to_remove = tail;
           tail = tail->prev;
         }
+
         docsize -= to_remove->doc.length();
         urlmap.erase(to_remove->url);
         delete to_remove;
@@ -221,6 +227,7 @@ public:
       cur->next = head;
       head = cur;
     }
+
     return cur->doc;
   }
 };

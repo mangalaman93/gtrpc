@@ -45,6 +45,7 @@ class ProxyRPCHandler : virtual public ProxyRPCIf {
     // if present, return it [Cache class]
     if(present) {
       _return = cache->get(url);
+      return;
     }
 
     // if not present, get the document [Curl class]
