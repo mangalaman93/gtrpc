@@ -225,8 +225,13 @@ public:
     LRUDoc *cur = urlmap[url];
     if(cur != head) {
       cur->prev->next = cur->next;
+      if(cur->next) {
+        cur->next->prev = cur->prev;
+      }
+
       cur->prev = NULL;
       cur->next = head;
+      head->prev = cur;
       head = cur;
     }
 
