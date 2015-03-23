@@ -13,8 +13,7 @@ rep=int(sys.argv[1])
 
 #array[cachetype][cachesize] returns array of entries
 
-cache={1:'RandomCache',2:'FIFOCache'}
-#,3:'LRUCache'}
+cache={1:'RandomCache',2:'FIFOCache',3:'LRUCache'}
 i=j=0
 cachesize=[10, 100,1024]
 for cacheindex in cache:
