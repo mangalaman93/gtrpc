@@ -70,8 +70,8 @@ int main(int argc, char **argv) {
 
 
   // @todo, replace it with the argument passed from command line
-  int cachesize = 1024*1024; // 1 MB
-  //int cachesize = atoi(argv[2]);
+  //int cachesize = 1024*1024; // 1 MB
+  int cachesize = atoi(argv[2])*1024;
   int type = atoi(argv[1]);
   shared_ptr<ProxyRPCHandler> handler(new ProxyRPCHandler(type,cachesize));
   shared_ptr<TProcessor> processor(new ProxyRPCProcessor(handler));
