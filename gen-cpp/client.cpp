@@ -29,6 +29,13 @@ int main(int argc, char **argv) {
       client.getDocument(doc, ss.str());
       doc.clear();
     }
+
+    for(int i=0; i<100; i++) {
+      stringstream ss;
+      ss<<url<<i;
+      client.getDocument(doc, ss.str());
+      doc.clear();
+    }
   } catch (TException& tx) {
     cout << "ERROR: " << tx.what() << endl;
   }
