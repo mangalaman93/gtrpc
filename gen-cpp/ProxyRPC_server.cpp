@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "curl.h"
-#include "caches.h"
+#include "cache.h"
 
 #include "ProxyRPC.h"
 #include <thrift/protocol/TBinaryProtocol.h>
