@@ -45,10 +45,10 @@ public:
     return false;
   }
 
-  void put(const string& key, const string& value) {}
+  void put(const string& url, const string& doc) {}
 
-  void get(const string& key, string& value) {
-    value = "";
+  string get(const string& key) {
+    return "";
   }
 };
 
