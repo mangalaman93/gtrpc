@@ -1,5 +1,6 @@
 #include "ProxyRPC.h"
 
+#include <sstream>
 #include <thrift/protocol/TBinaryProtocol.h>
 #include <thrift/transport/TSocket.h>
 #include <thrift/transport/TTransportUtils.h>
@@ -20,11 +21,14 @@ int main(int argc, char **argv) {
     transport->open();
 
     string doc;
-    string url = "http://www.google.com/";
-    client.getDocument(doc, url);
-    cout << " **** got the document ***** " << endl;
-    cout << doc << endl;
-    cout << "--------------------------------" << endl;
+    string url = "https://www.google.com/?q=hello#safe=off&q=";
+
+    for(int i=0; i<100; i++) {
+      stringstream ss;
+      ss<<url<<i;
+      client.getDocument(doc, ss.str());
+      doc.clear();
+    }
   } catch (TException& tx) {
     cout << "ERROR: " << tx.what() << endl;
   }

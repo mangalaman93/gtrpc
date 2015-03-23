@@ -25,11 +25,11 @@ public:
   // check if a document for a given url is already present
   virtual bool contains(const string& url) = 0;
 
-  // puts value for the key in the cache
+  // puts value for the url in the cache
   virtual void put(const string& url, const string& doc) = 0;
 
-  // gets value for the given key [should only be called when present]
-  virtual string get(const string& key) = 0;
+  // gets value for the given url [should only be called when present]
+  virtual string get(const string& url) = 0;
 };
 
 class EmptyCache : public Cache {
@@ -47,7 +47,7 @@ public:
 
   void put(const string& url, const string& doc) {}
 
-  string get(const string& key) {
+  string get(const string& url) {
     return "";
   }
 };
@@ -99,8 +99,8 @@ public:
     }
   }
 
-  string get(const string& key) {
-    return urlmap[key];
+  string get(const string& url) {
+    return urlmap[url];
   }
 };
 
@@ -142,8 +142,8 @@ public:
     }
   }
 
-  string get(const string& key) {
-    return urlmap[key];
+  string get(const string& url) {
+    return urlmap[url];
   }
 };
 
@@ -191,7 +191,9 @@ public:
       if(docsize <= maxdocsize) {
         LRUDoc *node = new LRUDoc(doc, url, NULL, head);
         urlmap[url] = node;
-        node->next = head;
+        if(head) {
+          head->prev = node;
+        }
         head = node;
 
         if(tail == NULL) {
@@ -219,8 +221,8 @@ public:
     }
   }
 
-  string get(const string& key) {
-    LRUDoc *cur = urlmap[key];
+  string get(const string& url) {
+    LRUDoc *cur = urlmap[url];
     if(cur != head) {
       cur->prev->next = cur->next;
       cur->prev = NULL;
