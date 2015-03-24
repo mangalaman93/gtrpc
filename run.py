@@ -15,7 +15,7 @@ rep=int(sys.argv[1])
 
 cache={1:'RandomCache',2:'FIFOCache',3:'LRUCache'}
 i=j=0
-cachesize=[10, 100,1024]
+cachesize=[0, 100,1024]
 for cacheindex in cache:
     timing=np.zeros((len(cachesize),rep))
     j=0
@@ -24,7 +24,9 @@ for cacheindex in cache:
         us=array([])
         #cmd="./bin/ProxyRPC_server 0 1024"
         cmd="./bin/ProxyRPC_server "+str(cacheindex)+" "+str(size)
-        server=subprocess.Popen(cmd,stdout=subprocess.PIPE,shell=True,preexec_fn=os.setsid)
+	#+">>"+cache[cacheindex]+str(size)+".txt"
+        #server=subprocess.Popen(cmd,stdout=subprocess.PIPE,shell=True,preexec_fn=os.setsid)
+        server=subprocess.Popen(cmd,shell=True,preexec_fn=os.setsid)
         print "Testing for different cache sizes: "+ str(size)
         for i in range(rep):
             index=rd.randint(0,len(urls)-1)
