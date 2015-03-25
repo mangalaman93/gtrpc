@@ -19,7 +19,7 @@ cachesize=[0, 100,1024]
 for cacheindex in cache:
     timing=np.zeros((len(cachesize),rep))
     j=0
-    print "Starting Test for cache "+ cache[cacheindex]
+    print "Testing cache "+ cache[cacheindex]
     for size in cachesize:
         us=array([])
         #cmd="./bin/ProxyRPC_server 0 1024"
@@ -27,7 +27,7 @@ for cacheindex in cache:
 	#+">>"+cache[cacheindex]+str(size)+".txt"
         #server=subprocess.Popen(cmd,stdout=subprocess.PIPE,shell=True,preexec_fn=os.setsid)
         server=subprocess.Popen(cmd,shell=True,preexec_fn=os.setsid)
-        print "Testing for different cache sizes: "+ str(size)
+        print "Cache size: "+ str(size)
         for i in range(rep):
             index=rd.randint(0,len(urls)-1)
             cmd2="./bin/get "+urls[index]
@@ -38,10 +38,10 @@ for cacheindex in cache:
         timing[j]=us
         j+=1
         os.killpg(server.pid,signal.SIGTERM)
-        print "terminated"
-    file=str(rep)+"random_load_"+str(cache[cacheindex])+".csv"
+        #print "terminated"
+    file="data/"+str(rep)+"random_load_"+str(cache[cacheindex])+".csv"
     np.savetxt(file,timing,delimiter=',',fmt='%1.0f')
-    print "saved file " + file
+    print "saved " + file
 
 #for i in range(rep):
 #    index=rd.randint(0,len(urls)-1)

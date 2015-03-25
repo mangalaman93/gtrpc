@@ -6,9 +6,9 @@
 #include "curl.h"
 #include "cache.h"
 #include <signal.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
+//#include <stdlib.h>
+//#include <stdio.h>
+//#include <unistd.h>
 
 #include "ProxyRPC.h"
 #include <thrift/protocol/TBinaryProtocol.h>
@@ -23,10 +23,11 @@ using namespace ::apache::thrift::server;
 
 using boost::shared_ptr;
 
+int counter;
+int hit;
+
 class ProxyRPCHandler : virtual public ProxyRPCIf {
   Cache *cache;
-  int count;
-  int hit;
  public:
   ProxyRPCHandler(int type, int cachesize) {
     switch(type) {
@@ -40,13 +41,13 @@ class ProxyRPCHandler : virtual public ProxyRPCIf {
         break;
 	    default: break;
     }
-  count=0;
+  counter=0;
   hit=0;
   }
 
   void getDocument(std::string& _return, const std::string& url) {
     _return.clear();
-    count++;
+    counter++;
     // check the cache [Cache class]
     bool present = cache->contains(url);
 
@@ -55,11 +56,6 @@ class ProxyRPCHandler : virtual public ProxyRPCIf {
       hit++;
       _return = cache->get(url);
       return;
-    }
-    if (count>=99) {
-        printf("Hit rate: %d",(100*hit/count));
-        count=0;
-        hit=0;
     }
     // if not present, get the document [Curl class]
     else {
@@ -76,7 +72,7 @@ class ProxyRPCHandler : virtual public ProxyRPCIf {
 };
 
 void exiting(int sig){
-    printf("Exiting");
+    printf("Hit rate: %d%%\n",(100*hit/counter));
     exit(1);
 }
 

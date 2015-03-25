@@ -70,7 +70,7 @@ public:
 
   void put(const string& url, const string& doc) {
     if(doc.length() > maxdocsize) {
-      printf("cannot accomodate this document in cache!\n");
+      //printf("cannot accomodate this document in cache!\n");
       return;
     }
 
@@ -122,7 +122,7 @@ public:
 
   void put(const string& url, const string& doc) {
     if(doc.length() > maxdocsize) {
-      printf("cannot accomodate this document in cache!\n");
+      //printf("cannot accomodate this document in cache!\n");
       return;
     }
 
@@ -180,7 +180,7 @@ public:
 
   void put(const string& url, const string& doc) {
     if(doc.length() > maxdocsize) {
-      printf("cannot accomodate this document in cache!\n");
+      //printf("cannot accomodate this document in cache!\n");
       return;
     }
 
