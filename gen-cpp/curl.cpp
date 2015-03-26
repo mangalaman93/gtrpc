@@ -28,6 +28,9 @@ void Curl::get(const string& url, string& doc) {
     /* userp parameter passed to write_data. */
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &doc);
 
+    // follow redirection
+    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+
     /* Actually perform the query &
        Check the return value and do whatever. */
     if(0 != curl_easy_perform(curl)) {

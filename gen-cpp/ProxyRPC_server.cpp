@@ -60,6 +60,10 @@ class ProxyRPCHandler : virtual public ProxyRPCIf {
     // if not present, get the document [Curl class]
     else {
       Curl::get(url, _return);
+      if(_return.length() == 0) {
+        cout<<"error occurred in fetching the url: "<<url<<endl;
+        exit(0);
+      }
     }
 
     // put the document in the cache [Cahce class]
