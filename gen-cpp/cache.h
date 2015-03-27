@@ -224,17 +224,22 @@ public:
   string get(const string& url) {
     LRUDoc *cur = urlmap[url];
     if(cur != head) {
-      cur->prev->next = cur->next;
-      if(cur->next) {
-        cur->next->prev = cur->prev;
-      } else {
+      if(cur == tail) {
+        head->prev = cur;
+        cur->next = head;
+        head = cur;
+        cur->prev->next = NULL;
         tail = cur->prev;
-      }
+        cur->prev = NULL;
+      } else {
+        cur->prev->next = cur->next;
+        cur->next->prev = cur->prev;
 
-      cur->prev = NULL;
-      cur->next = head;
-      head->prev = cur;
-      head = cur;
+        cur->prev = NULL;
+        head->prev = cur;
+        cur->next = head;
+        head = cur;
+      }
     }
 
     return cur->doc;
