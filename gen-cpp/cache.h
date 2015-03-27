@@ -227,6 +227,8 @@ public:
       cur->prev->next = cur->next;
       if(cur->next) {
         cur->next->prev = cur->prev;
+      } else {
+        tail = cur->prev;
       }
 
       cur->prev = NULL;
