@@ -10,10 +10,10 @@ if len(sys.argv) is not 3:
 rep=int(sys.argv[2])
 if int(sys.argv[1]): 
     load_type="random"
-    filename = 'top10.csv'
+    filename = 'data/top10.csv'
 else:
     load_type="exp"
-    filename = 'top100.csv'
+    filename = 'data/top100.csv'
 urls = genfromtxt(filename, delimiter=',',dtype="S40")
 #array[cachetype][cachesize] returns array of entries
 #cache={1:'RandomCache',2:'FIFOCache',3:'LRUCache'}
