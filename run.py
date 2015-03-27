@@ -16,9 +16,10 @@ else:
     filename = 'top100.csv'
 urls = genfromtxt(filename, delimiter=',',dtype="S40")
 #array[cachetype][cachesize] returns array of entries
-cache={1:'RandomCache',2:'FIFOCache',3:'LRUCache'}
+#cache={1:'RandomCache',2:'FIFOCache',3:'LRUCache'}
+cache={1:'RandomCache'}
 i=j=0
-cachesize=[0,128,512,1024,4096]
+cachesize=[0,64,128,256,512,1024,4096]
 for cacheindex in cache:
     timing=np.zeros((len(cachesize),rep))
     j=0
