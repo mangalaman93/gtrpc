@@ -11,7 +11,12 @@ using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 
 int main(int argc, char **argv) {
-  boost::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
+  if(argc != 3) {
+    printf( "usage: %s server-ip url\n", argv[0]);
+    return -1;
+  }
+
+  boost::shared_ptr<TTransport> socket(new TSocket(argv[1], 9090));
   boost::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
   boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
   ProxyRPCClient client(protocol);
@@ -19,13 +24,8 @@ int main(int argc, char **argv) {
   struct timeval start, end;
   long delta,seconds, useconds;
 
-  if(argc != 2) {
-    printf( "usage: %s url", argv[0] );
-    return -1;
-  }
-
   // Get List of URLs +  probabilities from doc
-  string url = argv[1];
+  string url = argv[2];
 
   // Maybe check the format of the url? "http://www.google.com/";
   try {

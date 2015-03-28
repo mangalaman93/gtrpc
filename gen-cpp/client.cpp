@@ -11,7 +11,12 @@ using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 
 int main(int argc, char **argv) {
-  boost::shared_ptr<TTransport> socket(new TSocket("localhost", 9090));
+  if(argc != 2) {
+    printf( "usage: %s server-ip\n", argv[0]);
+    return -1;
+  }
+
+  boost::shared_ptr<TTransport> socket(new TSocket(argv[1], 9090));
   boost::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
   boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
 
